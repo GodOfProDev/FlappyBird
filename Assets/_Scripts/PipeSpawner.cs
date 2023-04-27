@@ -6,7 +6,6 @@ using Random = UnityEngine.Random;
 
 public class PipeSpawner : MonoBehaviour
 {
-    [SerializeField] private Pipe pipePrefab;
     [SerializeField] private float spawnRate = 2f;
 
     [SerializeField] private float heightOffset = 10f;
@@ -31,6 +30,6 @@ public class PipeSpawner : MonoBehaviour
         float lowestPoint = transformPosition.y - heightOffset;
         float highestPoint = transformPosition.y + heightOffset;
 
-        Instantiate(pipePrefab, new Vector3(transformPosition.x, Random.Range(lowestPoint, highestPoint), 0), transform.rotation);
+        PipeManager.Instance.SpawnPipe(new Vector3(transformPosition.x, Random.Range(lowestPoint, highestPoint), 0));
     }
 }

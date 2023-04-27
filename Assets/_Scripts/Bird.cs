@@ -8,8 +8,6 @@ public class Bird : MonoBehaviour
     private Rigidbody2D _rigidbody;
     
     [SerializeField] private float flapStrength = 10f;
-    [SerializeField] private LayerMask pipeLayer;
-    [SerializeField] private LayerMask pipeScoreLayer;
     
     public int Score { get; private set; }
 
@@ -42,7 +40,7 @@ public class Bird : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.gameObject.layer != ToLayer(pipeScoreLayer)) return;
+        if (!col.gameObject.tag.Equals("Pipe Score")) return;
         
         Score += 1;
         OnScoreChanged?.Invoke();
@@ -50,21 +48,11 @@ public class Bird : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.layer != ToLayer(pipeLayer)) return;
+        if (!col.gameObject.tag.Equals("Pipe Body")) return;
         
         Score = 0;
         OnScoreChanged?.Invoke();
         OnGameOver?.Invoke();
         IsAlive = false;
-    }
-
-    private int ToLayer(int bitmask)
-    {
-        int result = bitmask>0 ? 0 : 31;
-        while( bitmask>1 ) {
-            bitmask = bitmask>>1;
-            result++;
-        }
-        return result;
     }
 }
